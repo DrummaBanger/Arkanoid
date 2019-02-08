@@ -43,6 +43,22 @@ namespace Arkanoid
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddAuthentication().AddFacebook(facebookOptions =>
+            {
+                facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
+                facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
+            });
+            services.AddAuthentication().AddGoogle(googleOptions =>
+            {
+                googleOptions.ClientId = Configuration["Authentication:Google:ClientId"];
+                googleOptions.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
+            });
+            services.AddAuthentication().AddMicrosoftAccount(microsoftOptions =>
+            {
+                microsoftOptions.ClientId = Configuration["Authentication:Microsoft:ApplicationId"];
+                microsoftOptions.ClientSecret = Configuration["Authentication:Microsoft:Password"];
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
