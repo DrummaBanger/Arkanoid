@@ -9,6 +9,9 @@
     @if (SignInManager.IsSignedIn(User))
     {
         <canvas id="arkanoid" width=800 height=500></canvas>
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <script src="~/js/jquery.js"></script>
+        <script src="~/js/arkanoid.js"></script>
     }
     else
     {
