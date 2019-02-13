@@ -19,11 +19,11 @@
                 @Html.DisplayNameFor(model => model.RecordID)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.UserName)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["UsernameSortParm"]">@Html.DisplayNameFor(model => model.UserName)</a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.UserScore)
-            </th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["ScoreSortParm"]">@Html.DisplayNameFor(model => model.UserScore)</a>
+</th>
             <th></th>
         </tr>
     </thead>

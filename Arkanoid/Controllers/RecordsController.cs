@@ -20,9 +20,26 @@ namespace Arkanoid.Controllers
         }
 
         // GET: Records
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder)
         {
-            return View(await _context.Records.ToListAsync());
+            ViewData["UsernameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "Username_desc" : "";
+            ViewData["ScoreSortParm"] = String.IsNullOrEmpty(sortOrder) ? "Score_desc" : "";
+            var Records = from s in _context.Records
+                             select s;
+            switch (sortOrder)
+            {
+                case "Username_desc":
+                    Records = Records.OrderByDescending(s => s.UserName);
+                    break;
+                case "Score_desc":
+                    Records = Records.OrderByDescending(s => s.UserScore);
+                    break;
+                default:
+                    Records = Records.OrderBy(s => s.UserName);
+                    Records = Records.OrderBy(s => s.UserScore);
+                    break;
+            }
+            return View(await Records.AsNoTracking().ToListAsync());
         }
 
         // GET: Records/Details/5
