@@ -20,12 +20,17 @@ namespace Arkanoid.Controllers
         }
 
         // GET: Records
-        public async Task<IActionResult> Index(string sortOrder)
+        public async Task<IActionResult> Index(string sortOrder, string searchString)
         {
             ViewData["UsernameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "Username_desc" : "";
             ViewData["ScoreSortParm"] = String.IsNullOrEmpty(sortOrder) ? "Score_desc" : "";
+            ViewData["CurrentFilter"] = searchString;
             var Records = from s in _context.Records
                              select s;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                Records = Records.Where(s => s.UserName.Contains(searchString));
+            }
             switch (sortOrder)
             {
                 case "Username_desc":
