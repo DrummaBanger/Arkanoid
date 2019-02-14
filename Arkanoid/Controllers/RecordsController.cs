@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Arkanoid.Data;
 using Arkanoid.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Arkanoid.Controllers
 {
@@ -66,6 +67,7 @@ namespace Arkanoid.Controllers
         }
 
         // GET: Records/Create
+
         public IActionResult Create()
         {
             return View();
@@ -88,6 +90,7 @@ namespace Arkanoid.Controllers
         }
 
         // GET: Records/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -106,6 +109,7 @@ namespace Arkanoid.Controllers
         // POST: Records/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("UserID,RecordID,UserName,UserScore")] Records records)
@@ -139,6 +143,7 @@ namespace Arkanoid.Controllers
         }
 
         // GET: Records/Delete/5
+        [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -157,6 +162,7 @@ namespace Arkanoid.Controllers
         }
 
         // POST: Records/Delete/5
+        [Authorize]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
