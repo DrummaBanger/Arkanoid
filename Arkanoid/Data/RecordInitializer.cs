@@ -12,7 +12,6 @@ namespace Arkanoid.Data
         {
             // context.Database.EnsureCreated();
 
-            // Look for any students.
             if (context.Records.Any())
             {
                 return;   // DB has been seeded

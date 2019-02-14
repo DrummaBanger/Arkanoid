@@ -16,8 +16,11 @@ namespace Arkanoid.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Display(Name = "№ рекорда")]
         public int RecordID { get; set; }
+        [Required]
+        [StringLength(50, MinimumLength = 3, ErrorMessage = "Имя игрока должно быть от 3 до 50 символов")]
         [Display(Name = "Имя игрока")]
         public string UserName { get; set; }
+        [Required]
         [Display(Name = "Счет")]
         public int UserScore { get; set; }
     }
