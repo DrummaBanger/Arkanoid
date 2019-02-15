@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Arkanoid.Data;
+using Arkanoid.Models;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -26,6 +27,7 @@ namespace Arkanoid
                 try
                 {
                     var context = services.GetRequiredService<ApplicationDbContext>();
+                    DbInitializer.InitializeAsync(context, services).Wait();
                     context.Database.Migrate();
                     RecordInitializer.Initialize(context);
                 }
