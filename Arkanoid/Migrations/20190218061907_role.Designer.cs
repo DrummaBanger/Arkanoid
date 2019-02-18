@@ -10,16 +10,35 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Arkanoid.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190208092624_Init")]
-    partial class Init
+    [Migration("20190218061907_role")]
+    partial class role
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn)
-                .HasAnnotation("ProductVersion", "2.2.1-servicing-10028")
+                .HasAnnotation("ProductVersion", "2.2.2-servicing-10034")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
+
+            modelBuilder.Entity("Arkanoid.Models.Records", b =>
+                {
+                    b.Property<int>("RecordID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("UserID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<int>("UserScore");
+
+                    b.HasKey("RecordID");
+
+                    b.ToTable("Records");
+                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {

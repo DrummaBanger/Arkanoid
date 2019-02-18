@@ -23,27 +23,19 @@ namespace Arkanoid.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error(int? id)
         {
-            if (id == 404)
+            switch (id)
             {
-                return View("NotFound");
+                case 404:
+                    return View("NotFound");
+                case 500:
+                    return View("IntServError");
+                case 401:
+                    return View("Unath");
+                case 403:
+                    return View("Forbid");
+                default:
+                    return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
-            else if (id == 500)
-            {
-                return View("IntServError");
-            }
-            else if (id == 401)
-            {
-                return View("Unath");
-            }
-            else if (id == 403)
-            {
-                return View("Forbid");
-            }
-            else
-            {
-                return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-            }
-            
         }
     }
 }

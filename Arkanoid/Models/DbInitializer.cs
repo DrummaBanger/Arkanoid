@@ -14,6 +14,7 @@ namespace Arkanoid.Models
         {
             //context.Database.EnsureCreated();
             var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var UserManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
             string[] roleNames = { "Admin", "Player" };
             IdentityResult roleResult;
             foreach (var roleName in roleNames)
@@ -24,6 +25,9 @@ namespace Arkanoid.Models
                     roleResult = await RoleManager.CreateAsync(new IdentityRole(roleName));
                 }
             }
+            IdentityUser user = await UserManager.FindByEmailAsync("test@mail.ru");
+            var User = new IdentityUser();
+            await UserManager.AddToRoleAsync(user, "Admin");
 
         }
     }

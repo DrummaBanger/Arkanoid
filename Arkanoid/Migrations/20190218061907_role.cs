@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Arkanoid.Migrations
 {
-    public partial class Init : Migration
+    public partial class role : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -45,6 +45,22 @@ namespace Arkanoid.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Records",
+                columns: table => new
+                {
+                    RecordID = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
+                    UserID = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
+                    UserName = table.Column<string>(maxLength: 50, nullable: false),
+                    UserScore = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Records", x => x.RecordID);
                 });
 
             migrationBuilder.CreateTable(
@@ -207,6 +223,9 @@ namespace Arkanoid.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "Records");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
