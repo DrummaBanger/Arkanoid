@@ -63,9 +63,9 @@ namespace Arkanoid
         {
             loggerFactory.AddFile(Path.Combine(Directory.GetCurrentDirectory(), "logger_"+ DateTime.Today.ToShortDateString()+".txt"));
             var logger = loggerFactory.CreateLogger("FileLogger");
+
             if (env.IsDevelopment())
             {
-                logger.LogInformation("In Development environment");
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();  
             }
