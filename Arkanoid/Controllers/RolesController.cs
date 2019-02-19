@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Arkanoid.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Arkanoid.Controllers
 {
@@ -17,8 +18,10 @@ namespace Arkanoid.Controllers
             _roleManager = roleManager;
             _userManager = userManager;
         }
+        [Authorize(Roles = "Admin")]
         public IActionResult Index() => View(_roleManager.Roles.ToList());
 
+        [Authorize(Roles = "Admin")]
         public IActionResult Create() => View();
         [HttpPost]
         public async Task<IActionResult> Create(string name)
@@ -41,6 +44,7 @@ namespace Arkanoid.Controllers
             return View(name);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Delete(string id)
         {
@@ -51,9 +55,10 @@ namespace Arkanoid.Controllers
             }
             return RedirectToAction("Index");
         }
-
+        [Authorize(Roles = "Admin")]
         public IActionResult UserList() => View(_userManager.Users.ToList());
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(string userId)
         {
             // получаем пользователя
@@ -75,6 +80,7 @@ namespace Arkanoid.Controllers
 
             return NotFound();
         }
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Edit(string userId, List<string> roles)
         {
