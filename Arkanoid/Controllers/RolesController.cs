@@ -46,6 +46,7 @@ namespace Arkanoid.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(string id)
         {
             IdentityRole role = await _roleManager.FindByIdAsync(id);
@@ -81,6 +82,7 @@ namespace Arkanoid.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string userId, List<string> roles)
         {
             // получаем пользователя
