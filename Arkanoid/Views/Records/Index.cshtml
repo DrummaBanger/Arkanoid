@@ -4,60 +4,70 @@
     ViewData["Title"] = "Records";
 }
 
-<h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<h1>Index</h1>
+@if (User.Identity.IsAuthenticated)
+{
+    @if (User.IsInRole("Admin"))
+    {
+        <p>
+            <a asp-action="Create">Create New</a>
+        </p>
+    }
+}
 
     <form asp-action="Index" method="get">
-    <div class="form-actions no-color">
-        <p>
-            Find by name: <input type="text" name="SearchString" value="@ViewData["currentFilter"]" />
-            <input type="submit" value="Search" class="btn btn-default" /> |
-            <a asp-action="Index">Back to Full List</a>
-        </p>
-    </div>
-</form>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.UserID)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RecordID)
-            </th>
-            <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["UsernameSortParm"]">@Html.DisplayNameFor(model => model.UserName)</a>
-            </th>
-            <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["ScoreSortParm"]">@Html.DisplayNameFor(model => model.UserScore)</a>
-</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RecordID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserScore)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.RecordID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.RecordID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.RecordID">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+        <div class="form-actions no-color">
+            <p>
+                Find by name: <input type="text" name="SearchString" value="@ViewData["currentFilter"]" />
+                <input type="submit" value="Search" class="btn btn-default" /> |
+                <a asp-action="Index">Back to Full List</a>
+            </p>
+        </div>
+    </form>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.UserID)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.RecordID)
+                </th>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["UsernameSortParm"]">@Html.DisplayNameFor(model => model.UserName)</a>
+                </th>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["ScoreSortParm"]">@Html.DisplayNameFor(model => model.UserScore)</a>
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RecordID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserScore)
+                </td>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.RecordID">Edit</a> |
+                            <a asp-action="Details" asp-route-id="@item.RecordID">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@item.RecordID">Delete</a>
+                        </td>
+                    }
+                    </tr>
+            }
+        </tbody>
+    </table>

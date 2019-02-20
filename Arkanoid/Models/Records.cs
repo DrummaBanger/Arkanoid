@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -10,9 +11,8 @@ namespace Arkanoid.Models
 {
     public class Records
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [ScaffoldColumn(false)]
-        public int UserID { get; set; }
+        public string UserID { get; set; }
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Display(Name = "№ рекорда")]
         public int RecordID { get; set; }

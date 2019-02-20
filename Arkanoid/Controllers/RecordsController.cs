@@ -21,6 +21,7 @@ namespace Arkanoid.Controllers
         }
 
         // GET: Records
+        [Authorize]
         public async Task<IActionResult> Index(string sortOrder, string searchString)
         {
             ViewData["UsernameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "Username_desc" : "";
@@ -67,7 +68,7 @@ namespace Arkanoid.Controllers
         }
 
         // GET: Records/Create
-
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View();
@@ -76,6 +77,7 @@ namespace Arkanoid.Controllers
         // POST: Records/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("UserID,RecordID,UserName,UserScore")] Records records)

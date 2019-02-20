@@ -17,17 +17,7 @@ namespace Arkanoid.Data
                 return;   // DB has been seeded
             }
 
-            var record = new Records[]
-            {
-                new Records { UserID = 1, RecordID = 1, UserName = "test", UserScore = 100 },
-                new Records { UserID = 2, RecordID = 2, UserName = "test1", UserScore = 50 },
-            };
-            foreach (Records s in record)
-            {
-                context.Records.Add(s);
-            }
-            context.SaveChanges();
-
+           
         }
     }
 }
