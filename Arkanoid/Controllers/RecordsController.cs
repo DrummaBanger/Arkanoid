@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Arkanoid.Data;
 using Arkanoid.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Arkanoid.Controllers
 {
@@ -20,9 +21,32 @@ namespace Arkanoid.Controllers
         }
 
         // GET: Records
-        public async Task<IActionResult> Index()
+        [Authorize]
+        public async Task<IActionResult> Index(string sortOrder, string searchString)
         {
-            return View(await _context.Records.ToListAsync());
+            ViewData["UsernameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "Username_desc" : "";
+            ViewData["ScoreSortParm"] = String.IsNullOrEmpty(sortOrder) ? "Score_desc" : "";
+            ViewData["CurrentFilter"] = searchString;
+            var Records = from s in _context.Records
+                             select s;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                Records = Records.Where(s => s.UserName.Contains(searchString));
+            }
+            switch (sortOrder)
+            {
+                case "Username_desc":
+                    Records = Records.OrderByDescending(s => s.UserName);
+                    break;
+                case "Score_desc":
+                    Records = Records.OrderByDescending(s => s.UserScore);
+                    break;
+                default:
+                    Records = Records.OrderBy(s => s.UserName);
+                    Records = Records.OrderBy(s => s.UserScore);
+                    break;
+            }
+            return View(await Records.AsNoTracking().ToListAsync());
         }
 
         // GET: Records/Details/5
@@ -44,6 +68,7 @@ namespace Arkanoid.Controllers
         }
 
         // GET: Records/Create
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View();
@@ -52,6 +77,7 @@ namespace Arkanoid.Controllers
         // POST: Records/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("UserID,RecordID,UserName,UserScore")] Records records)
@@ -66,6 +92,7 @@ namespace Arkanoid.Controllers
         }
 
         // GET: Records/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -84,6 +111,7 @@ namespace Arkanoid.Controllers
         // POST: Records/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("UserID,RecordID,UserName,UserScore")] Records records)
@@ -117,6 +145,7 @@ namespace Arkanoid.Controllers
         }
 
         // GET: Records/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -135,6 +164,7 @@ namespace Arkanoid.Controllers
         }
 
         // POST: Records/Delete/5
+        [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
