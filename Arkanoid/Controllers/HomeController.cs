@@ -10,17 +10,29 @@ namespace Arkanoid.Controllers
 {
     public class HomeController : Controller
     {
+        /// <summary>
+        /// Получает главную страницу
+        /// </summary>
+        [HttpGet]
         public IActionResult Index()
         {
             return View();
         }
 
+        /// <summary>
+        /// Получает страницу конфиденциальности
+        /// </summary>
+        [HttpGet]
         public IActionResult Privacy()
         {
             return View();
         }
 
+        /// <summary>
+        /// Обработка ошибок http
+        /// </summary>
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        [HttpGet]
         public IActionResult Error(int? id)
         {
             switch (id)

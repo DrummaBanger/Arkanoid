@@ -1,4 +1,4 @@
-﻿using Arkanoid.Data;
+﻿using DAL.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -25,7 +25,7 @@ namespace Arkanoid.Models
                     roleResult = await RoleManager.CreateAsync(new IdentityRole(roleName));
                 }
             }
-            IdentityUser user = await UserManager.FindByEmailAsync("test@mail.ru");
+            IdentityUser user = await UserManager.FindByEmailAsync("1@test.ru");
             var User = new IdentityUser();
             await UserManager.AddToRoleAsync(user, "Admin");
 

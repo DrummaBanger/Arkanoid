@@ -1,23 +1,18 @@
-﻿using Arkanoid.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Text;
 
-namespace Arkanoid.Data
+namespace DAL.Data
 {
     public class RecordInitializer
     {
         public static void Initialize(ApplicationDbContext context)
         {
-            // context.Database.EnsureCreated();
-
             if (context.Records.Any())
             {
-                return;   // DB has been seeded
+                return; 
             }
-
-           
         }
     }
 }

@@ -5,51 +5,44 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Arkanoid.Data;
 using Arkanoid.Models;
 using Microsoft.AspNetCore.Authorization;
+using DAL.Services;
+using Arkanoid.Services;
 
 namespace Arkanoid.Controllers
 {
+    /// <summary>
+    /// Класс управления рекордами
+    /// </summary>
     public class RecordsController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IRecordsService _records;
 
-        public RecordsController(ApplicationDbContext context)
+        public RecordsController(IRecordsService records)
         {
-            _context = context;
+            _records = records;
         }
 
         // GET: Records
+        /// <summary>
+        /// Получает список рекордов
+        /// </summary>
+        /// <param name="sortOrder">Сортировка</param>
+        /// <param name="searchString">Поиск</param>
+        [HttpGet]
         [Authorize]
-        public async Task<IActionResult> Index(string sortOrder, string searchString)
+        public async Task<IActionResult> Index()
         {
-            ViewData["UsernameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "Username_desc" : "";
-            ViewData["ScoreSortParm"] = String.IsNullOrEmpty(sortOrder) ? "Score_desc" : "";
-            ViewData["CurrentFilter"] = searchString;
-            var Records = from s in _context.Records
-                             select s;
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                Records = Records.Where(s => s.UserName.Contains(searchString));
-            }
-            switch (sortOrder)
-            {
-                case "Username_desc":
-                    Records = Records.OrderByDescending(s => s.UserName);
-                    break;
-                case "Score_desc":
-                    Records = Records.OrderByDescending(s => s.UserScore);
-                    break;
-                default:
-                    Records = Records.OrderBy(s => s.UserName);
-                    Records = Records.OrderBy(s => s.UserScore);
-                    break;
-            }
-            return View(await Records.AsNoTracking().ToListAsync());
+            return View("Index", await this._records.GetRecords(HttpContext.User.Identity.Name));
         }
 
-        // GET: Records/Details/5
+        // GET: Persons/Details/5
+        /// <summary>
+        /// Получает данные о персонаже
+        /// </summary>
+        /// <param name="id">Идентификатор персонажа</param>
+        [HttpGet]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -57,8 +50,8 @@ namespace Arkanoid.Controllers
                 return NotFound();
             }
 
-            var records = await _context.Records
-                .FirstOrDefaultAsync(m => m.RecordID == id);
+            var records = await _records.GetDetails((int)id);
+
             if (records == null)
             {
                 return NotFound();
@@ -68,7 +61,10 @@ namespace Arkanoid.Controllers
         }
 
         // GET: Records/Create
-        [Authorize(Roles = "Admin")]
+        /// <summary>
+        /// Получает страницу создания рекорда
+        /// </summary>
+        [HttpGet]
         public IActionResult Create()
         {
             return View();
@@ -77,22 +73,24 @@ namespace Arkanoid.Controllers
         // POST: Records/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UserID,RecordID,UserName,UserScore")] Records records)
+        public async Task<IActionResult> Create(Records records)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(records);
-                await _context.SaveChangesAsync();
+                await _records.CreateRecord(records, "add");
                 return RedirectToAction(nameof(Index));
             }
             return View(records);
         }
 
         // GET: Records/Edit/5
-        [Authorize(Roles = "Admin")]
+        /// <summary>
+        /// Получает страницу редактирования рекорда
+        /// </summary>
+        /// <param name="id">Идентификатор рекорда</param>
+        [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -100,7 +98,7 @@ namespace Arkanoid.Controllers
                 return NotFound();
             }
 
-            var records = await _context.Records.FindAsync(id);
+            var records = await _records.GetDetails((int)id);
             if (records == null)
             {
                 return NotFound();
@@ -109,12 +107,15 @@ namespace Arkanoid.Controllers
         }
 
         // POST: Records/Edit/5
+        /// <summary>
+        /// Редактирует рекорд
+        /// </summary>
+        /// <param name="id">Идентификатор рекорда</param>
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("UserID,RecordID,UserName,UserScore")] Records records)
+        public async Task<IActionResult> Edit(int id, Records records)
         {
             if (id != records.RecordID)
             {
@@ -125,16 +126,10 @@ namespace Arkanoid.Controllers
             {
                 try
                 {
-                    _context.Update(records);
-                    await _context.SaveChangesAsync();
+                    await _records.CreateRecord(records, "update");
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!RecordsExists(records.RecordID))
-                    {
-                        return NotFound();
-                    }
-                    else
                     {
                         throw;
                     }
@@ -145,7 +140,11 @@ namespace Arkanoid.Controllers
         }
 
         // GET: Records/Delete/5
-        [Authorize(Roles = "Admin")]
+        /// <summary>
+        /// Получает страницу удаления персонажа
+        /// </summary>
+        /// <param name="id">Идентификатор рекорда</param>
+        [HttpGet]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -153,8 +152,8 @@ namespace Arkanoid.Controllers
                 return NotFound();
             }
 
-            var records = await _context.Records
-                .FirstOrDefaultAsync(m => m.RecordID == id);
+            var records = await _records.GetDetails((int)id);
+
             if (records == null)
             {
                 return NotFound();
@@ -164,20 +163,16 @@ namespace Arkanoid.Controllers
         }
 
         // POST: Records/Delete/5
-        [Authorize(Roles = "Admin")]
+        /// <summary>
+        /// Удаляет рекорд
+        /// </summary>
+        /// <param name="id">Идентификатор рекорда</param>
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var records = await _context.Records.FindAsync(id);
-            _context.Records.Remove(records);
-            await _context.SaveChangesAsync();
+            await _records.DeleteRecordsAsync(id);
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool RecordsExists(int id)
-        {
-            return _context.Records.Any(e => e.RecordID == id);
         }
     }
 }
