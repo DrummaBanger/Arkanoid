@@ -23,6 +23,7 @@ namespace Arkanoid.Services.Implementation
             return this.recordsData.DeleteRecordsAsync(id);
         }
 
+
         public async Task<IEnumerable<Records>> GetRecords(string id)
         {
             return (await this.recordsData.GetRecordsAsync(id)).Adapt<IEnumerable<Records>>();

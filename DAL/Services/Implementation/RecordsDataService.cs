@@ -53,7 +53,5 @@ namespace DAL.Services.Implementation
         {
             return db.Records.Any(e => e.RecordID == id);
         }
-
-
     }
 }

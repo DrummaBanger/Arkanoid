@@ -28,18 +28,16 @@ namespace Arkanoid.Controllers
         /// <summary>
         /// Получает список рекордов
         /// </summary>
-        /// <param name="sortOrder">Сортировка</param>
-        /// <param name="searchString">Поиск</param>
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> Index()
         {
-            return View("Index", await this._records.GetRecords(HttpContext.User.Identity.Name));
+                return View("Index", await this._records.GetRecords(HttpContext.User.Identity.Name));
         }
 
         // GET: Persons/Details/5
         /// <summary>
-        /// Получает данные о персонаже
+        /// Получает данные о рекордах
         /// </summary>
         /// <param name="id">Идентификатор персонажа</param>
         [HttpGet]
@@ -71,8 +69,11 @@ namespace Arkanoid.Controllers
         }
 
         // POST: Records/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        /// Создает рекорд
+        /// </summary>
+        /// <param name="id">Идентификатор рекорда</param>
+        /// <param name="records">Рекорд</param>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Records records)
@@ -90,6 +91,7 @@ namespace Arkanoid.Controllers
         /// Получает страницу редактирования рекорда
         /// </summary>
         /// <param name="id">Идентификатор рекорда</param>
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
@@ -111,8 +113,8 @@ namespace Arkanoid.Controllers
         /// Редактирует рекорд
         /// </summary>
         /// <param name="id">Идентификатор рекорда</param>
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <param name="records">Рекорд</param>
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Records records)
@@ -141,9 +143,10 @@ namespace Arkanoid.Controllers
 
         // GET: Records/Delete/5
         /// <summary>
-        /// Получает страницу удаления персонажа
+        /// Получает страницу удаления рекорда
         /// </summary>
         /// <param name="id">Идентификатор рекорда</param>
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> Delete(int? id)
         {
@@ -167,6 +170,7 @@ namespace Arkanoid.Controllers
         /// Удаляет рекорд
         /// </summary>
         /// <param name="id">Идентификатор рекорда</param>
+        [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -174,5 +178,6 @@ namespace Arkanoid.Controllers
             await _records.DeleteRecordsAsync(id);
             return RedirectToAction(nameof(Index));
         }
+
     }
 }
