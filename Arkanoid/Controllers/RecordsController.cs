@@ -13,7 +13,7 @@ using Arkanoid.Services;
 namespace Arkanoid.Controllers
 {
     /// <summary>
-    /// Класс управления рекордами
+    /// Контроллер управления рекордами
     /// </summary>
     public class RecordsController : Controller
     {

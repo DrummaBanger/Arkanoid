@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace BAL.Services
 {
+    /// <summary>
+    /// Интерфейс работы с рекордами
+    /// </summary>
     public interface IRecordsBusinessService
     {
         /// <summary>

@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Arkanoid.Services
 {
+    /// <summary>
+    /// Интерфейс работы с рекордами
+    /// </summary>
     public interface IRecordsService
     {
         /// <summary>

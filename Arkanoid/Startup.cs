@@ -56,7 +56,7 @@ namespace Arkanoid
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            loggerFactory.AddFile(Path.Combine(Directory.GetCurrentDirectory(), "logger_"+ DateTime.Today.ToShortDateString()+".txt"));
+            loggerFactory.AddFile(Path.Combine(Directory.GetCurrentDirectory(), $"logs\\log_{DateTime.Today.ToShortDateString()}.txt"));
             var logger = loggerFactory.CreateLogger("FileLogger");
 
             if (env.IsDevelopment())

@@ -8,6 +8,9 @@ using Arkanoid.Models;
 
 namespace Arkanoid.Controllers
 {
+    /// <summary>
+    /// Базовый контроллер приложения
+    /// </summary>
     public class HomeController : Controller
     {
         /// <summary>

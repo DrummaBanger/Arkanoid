@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace Arkanoid.Controllers
 {
     /// <summary>
-    /// Класс управления ролями пользователей
+    /// Контроллер управления ролями пользователей
     /// </summary>
     [Authorize(Roles = "Admin")]
     public class RolesController : Controller
