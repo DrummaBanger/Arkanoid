@@ -4,6 +4,7 @@ using DAL.Services;
 using Mapster;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -41,19 +42,18 @@ namespace BAL.Services.Implementation
             return recordsDto.Adapt<RecordsBusiness>();
         }
 
-        public async Task CreateRecord(RecordsBusiness records, string operation)
+        public async Task CreateRecord(RecordsBusiness records)
         {
             var recordsDto = records.Adapt<RecordsData>();
             recordsDto.RecordID = records.RecordID;
-            switch (operation)
-            {
-                case "add":
-                    await this.recordsServices.CreateRecord(recordsDto);
-                    break;
-                case "update":
-                    await this.recordsServices.UpdateRecord(recordsDto);
-                    break;
-            }
+            await this.recordsServices.CreateRecord(recordsDto);
+        }
+
+        public async Task UpdateRecord(RecordsBusiness records)
+        {
+            var recordsDto = records.Adapt<RecordsData>();
+            recordsDto.RecordID = records.RecordID;
+            await this.recordsServices.UpdateRecord(recordsDto);
         }
     }
 }

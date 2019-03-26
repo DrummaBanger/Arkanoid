@@ -80,7 +80,7 @@ namespace Arkanoid.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _records.CreateRecord(records, "add");
+                await _records.CreateRecord(records);
                 return RedirectToAction(nameof(Index));
             }
             return View(records);
@@ -128,7 +128,7 @@ namespace Arkanoid.Controllers
             {
                 try
                 {
-                    await _records.CreateRecord(records, "update");
+                    await _records.UpdateRecord(records);
                 }
                 catch (DbUpdateConcurrencyException)
                 {

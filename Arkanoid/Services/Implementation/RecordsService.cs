@@ -23,7 +23,6 @@ namespace Arkanoid.Services.Implementation
             return this.recordsData.DeleteRecordsAsync(id);
         }
 
-
         public async Task<IEnumerable<Records>> GetRecords(string id)
         {
             return (await this.recordsData.GetRecordsAsync(id)).Adapt<IEnumerable<Records>>();
@@ -34,10 +33,17 @@ namespace Arkanoid.Services.Implementation
             return (await recordsData.GetDetails(id)).Adapt<Records>();
         }
 
-        public async Task<int> CreateRecord(Records records, string operation)
+        public async Task<int> CreateRecord(Records records)
         {
             var baseRecords = records.Adapt<RecordsBusiness>();
-            await this.recordsData.CreateRecord(baseRecords, operation);
+            await this.recordsData.CreateRecord(baseRecords);
+            return baseRecords.RecordID;
+        }
+
+        public async Task<int> UpdateRecord(Records records)
+        {
+            var baseRecords = records.Adapt<RecordsBusiness>();
+            await this.recordsData.UpdateRecord(baseRecords);
             return baseRecords.RecordID;
         }
     }

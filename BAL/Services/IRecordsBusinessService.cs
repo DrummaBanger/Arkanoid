@@ -20,9 +20,14 @@ namespace BAL.Services
         /// <summary>
         /// Создает рекорд в БД
         /// </summary>
-        /// <param name="id">Идентификатор рекорда</param>
-        /// <param name="operation">Операция (создание/изменение)</param>
-        Task CreateRecord(RecordsBusiness records, string operation);
+        /// <param name="records">Рекорд</param>
+        Task CreateRecord(RecordsBusiness records);
+
+        /// <summary>
+        /// Редактирует рекорд в БД
+        /// </summary>
+        /// <param name="records">Рекорд</param>
+        Task UpdateRecord(RecordsBusiness records);
 
         /// <summary>
         /// Получает рекорд по идентификатору

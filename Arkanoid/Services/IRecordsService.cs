@@ -33,7 +33,12 @@ namespace Arkanoid.Services
         /// Создает рекорд в БД
         /// </summary>
         /// <param name="records">Рекорд</param>
-        /// <param name="operation">Операция (создание/изменение)</param>
-        Task<int> CreateRecord(Records records, string operation);
+        Task<int> CreateRecord(Records records);
+
+        /// <summary>
+        /// Редактирует рекорд в БД
+        /// </summary>
+        /// <param name="records">Рекорд</param>
+        Task<int> UpdateRecord(Records records);
     }
 }
