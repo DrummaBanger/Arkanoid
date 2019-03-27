@@ -22,13 +22,7 @@ namespace BAL.Services.Implementation
         public async Task<IList<RecordsBusiness>> GetRecordsAsync(string id)
         {
             var recordsDto = await this.recordsServices.GetRecords(id);
-            var records = new List<RecordsBusiness>();
-            foreach (var el in recordsDto)
-            {
-                var record = el.Adapt<RecordsBusiness>();
-                records.Add(record);
-            }
-            return records;
+            return recordsDto.Select(el => (el.Adapt<RecordsBusiness>())).ToList();
         }
 
         public Task DeleteRecordsAsync(int id)
