@@ -19,7 +19,7 @@ namespace Arkanoid.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            return View();
+            return View("Index");
         }
 
         /// <summary>
