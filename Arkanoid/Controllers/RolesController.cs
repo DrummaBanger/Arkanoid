@@ -34,7 +34,7 @@ namespace Arkanoid.Controllers
         /// Получает страницу создания роли
         /// </summary>
         [HttpGet]
-        public IActionResult Create(IdentityRole role) => View();
+        public IActionResult Create() => View();
 
         /// <summary>
         /// Создание роли
