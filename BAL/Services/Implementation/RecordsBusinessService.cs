@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace BAL.Services.Implementation
 {
-    internal class RecordsBusinessService : IRecordsBusinessService
+    public class RecordsBusinessService : IRecordsBusinessService
     {
         private readonly IRecordsDataService recordsServices;
 

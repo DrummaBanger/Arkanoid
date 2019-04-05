@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Services.Implementation
 {
-    internal class RecordsDataService: IRecordsDataService
+    public class RecordsDataService: IRecordsDataService
     {
         private ApplicationDbContext db;
         public RecordsDataService(ApplicationDbContext context)
